@@ -8,9 +8,33 @@ on:
     branches:
       - main
       - develop
+    # `ready_for_review` MUSI tu byc. Domyslny zestaw typow to
+    # opened/synchronize/reopened, wiec bez niego wyjscie PR-a z draftu nie
+    # odpaliloby nic — czyli CI nie ruszyloby nigdy.
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "ai/**"
+      - ".ai/**"
+      - ".claude/**"
+      - "LICENSE"
+      - ".gitignore"
+
+# Nowy push na te sama galez ubija poprzedni przebieg.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
+    # Draft nie placi za CI, a etykieta `skip-qa` wylacza je swiadomie.
+    # `github.event_name != 'pull_request'` przepuszcza pushe na galezie glowne,
+    # gdzie `github.event.pull_request` w ogole nie istnieje.
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.draft == false &&
+       !contains(github.event.pull_request.labels.*.name, 'skip-qa'))
     runs-on: ubuntu-latest
     env:
       PLATFORM_CHANNEL: ${{ github.base_ref == 'main' && 'latest' || 'develop' }}
