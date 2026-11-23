@@ -173,7 +173,7 @@ export default function ProductsListPage() {
         accessorKey: 'fabric_consumption',
         header: t('production_bom.products.fields.fabricConsumption', 'Fabric per unit'),
         enableSorting: false,
-        meta: { maxWidth: '140px' },
+        meta: { hidden: true, maxWidth: '140px' },
         cell: ({ row }) =>
           Number(row.original.fabric_consumption) > 0 ? (
             <span className="tabular-nums">{formatDecimal(row.original.fabric_consumption, locale, 3)} m</span>

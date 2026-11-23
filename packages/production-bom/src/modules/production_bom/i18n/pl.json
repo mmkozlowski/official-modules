@@ -43,7 +43,7 @@
   "production_bom.duplicate.failed": "Nie udało się zduplikować wyrobu. Nic nie zostało zapisane.",
   "production_bom.duplicate.submit": "Duplikuj",
   "production_bom.duplicate.title": "Duplikuj wyrób",
-  "production_bom.materialType.accessory": "Akcesoria (sznurek, nici…)",
+  "production_bom.materialType.accessory": "Akcesoria",
   "production_bom.materialType.fabric": "Tkanina",
   "production_bom.materialType.foam": "Gąbka",
   "production_bom.materialType.other": "Inne",

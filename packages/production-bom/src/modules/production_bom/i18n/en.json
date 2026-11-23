@@ -43,7 +43,7 @@
   "production_bom.duplicate.failed": "The product could not be duplicated. Nothing was saved.",
   "production_bom.duplicate.submit": "Duplicate",
   "production_bom.duplicate.title": "Duplicate product",
-  "production_bom.materialType.accessory": "Accessories (cord, thread…)",
+  "production_bom.materialType.accessory": "Accessories",
   "production_bom.materialType.fabric": "Fabric",
   "production_bom.materialType.foam": "Foam",
   "production_bom.materialType.other": "Other",

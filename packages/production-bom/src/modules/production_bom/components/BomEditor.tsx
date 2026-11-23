@@ -47,14 +47,24 @@ function draftQuantity(line: DraftLine): string | null {
   return isPositiveDecimal(line.quantity) ? normalizeDecimal(line.quantity) : null
 }
 
-function toDraft(view: BomView): DraftLine[] {
+/** Decimal separator of the UI locale, so a Polish screen shows "0,45", not "0.45". */
+function decimalSeparator(locale: string | undefined): string {
+  try {
+    return new Intl.NumberFormat(locale).formatToParts(1.5).find((part) => part.type === 'decimal')?.value ?? '.'
+  } catch {
+    return '.'
+  }
+}
+
+function toDraft(view: BomView, separator: string): DraftLine[] {
+  const show = (value: string) => String(Number(value)).replace('.', separator)
   return view.lines.map((line) => ({
     key: nextKey(),
     materialId: line.materialId,
-    quantity: String(Number(line.quantity)),
+    quantity: show(line.quantity),
     isSplit: line.segmentCount != null && line.segmentLength != null,
     segmentCount: line.segmentCount != null ? String(line.segmentCount) : '',
-    segmentLength: line.segmentLength != null ? String(Number(line.segmentLength)) : '',
+    segmentLength: line.segmentLength != null ? show(line.segmentLength) : '',
     notes: line.notes ?? '',
   }))
 }
@@ -81,14 +91,15 @@ export function BomEditor({
 }) {
   const t = useT()
   const locale = useLocale()
-  const [lines, setLines] = React.useState<DraftLine[]>(() => toDraft(bom))
+  const separator = React.useMemo(() => decimalSeparator(locale), [locale])
+  const [lines, setLines] = React.useState<DraftLine[]>(() => toDraft(bom, separator))
   const [isDirty, setIsDirty] = React.useState(false)
   const [isSaving, setIsSaving] = React.useState(false)
 
   React.useEffect(() => {
-    setLines(toDraft(bom))
+    setLines(toDraft(bom, separator))
     setIsDirty(false)
-  }, [bom])
+  }, [bom, separator])
 
   const bomMaterials = React.useMemo(() => materials.filter((material) => material.material_type !== 'fabric'), [materials])
   const materialById = React.useMemo(() => {
@@ -142,7 +153,7 @@ export function BomEditor({
   }
   const toggleSplit = (line: DraftLine) => {
     if (line.isSplit) {
-      update(line.key, { isSplit: false, quantity: draftQuantity(line) ?? line.quantity })
+      update(line.key, { isSplit: false, quantity: (draftQuantity(line) ?? line.quantity).replace('.', separator) })
     } else {
       update(line.key, { isSplit: true, segmentCount: '1', segmentLength: line.quantity })
     }
@@ -292,7 +303,7 @@ export function BomEditor({
                         />
                         <span className="text-sm text-muted-foreground">{unitLabel}</span>
                         <span className="ml-1 text-xs tabular-nums text-muted-foreground">
-                          = {draftQuantity(line) ?? '—'} {unitLabel}
+                          = {(draftQuantity(line) ?? '—').replace('.', separator)} {unitLabel}
                         </span>
                       </div>
                     ) : (

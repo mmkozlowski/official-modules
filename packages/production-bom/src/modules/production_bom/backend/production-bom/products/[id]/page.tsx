@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Copy } from 'lucide-react'
 import { Page, PageBody } from '@open-mercato/ui/backend/Page'
 import { CrudForm } from '@open-mercato/ui/backend/CrudForm'
@@ -28,10 +28,9 @@ import type { BomView, ListResponse, MaterialRow, ProductRow } from '../../../..
  * calculator for N units. One screen, because those three answer one question
  * in sequence: what is it, what is it made of, what does an order of it take.
  */
-export default function ProductDetailPage() {
+export default function ProductDetailPage({ params }: { params?: { id?: string } }) {
   const t = useT()
   const router = useRouter()
-  const params = useParams<{ id: string }>()
   const productId = String(params?.id ?? '')
 
   const [product, setProduct] = React.useState<ProductRow | null>(null)
@@ -44,35 +43,42 @@ export default function ProductDetailPage() {
   const [duplicateSource, setDuplicateSource] = React.useState<DuplicateSource | null>(null)
 
   React.useEffect(() => {
-    if (!productId) return
+    if (!productId) {
+      setIsLoading(false)
+      return
+    }
     let cancelled = false
     void (async () => {
       setIsLoading(true)
       setError(null)
-      const [productCall, bomCall, materialsCall] = await Promise.all([
-        apiCall<ListResponse<ProductRow>>(`/api/production_bom/products?id=${encodeURIComponent(productId)}`),
-        apiCall<BomView>(`/api/production_bom/products/${encodeURIComponent(productId)}/bom`),
-        apiCall<ListResponse<MaterialRow>>('/api/production_bom/materials?pageSize=100&isActive=true&sortField=name&sortDir=asc'),
-      ])
-      if (cancelled) return
-      const found = productCall.ok ? productCall.result?.items?.[0] : undefined
-      if (!found || !bomCall.ok || !bomCall.result) {
-        setError(t('production_bom.products.detail.notFound', 'Product not found.'))
-        setIsLoading(false)
-        return
+      try {
+        const [productCall, bomCall, materialsCall] = await Promise.all([
+          apiCall<ListResponse<ProductRow>>(`/api/production_bom/products?id=${encodeURIComponent(productId)}`),
+          apiCall<BomView>(`/api/production_bom/products/${encodeURIComponent(productId)}/bom`),
+          apiCall<ListResponse<MaterialRow>>('/api/production_bom/materials?pageSize=100&isActive=true&sortField=name&sortDir=asc'),
+        ])
+        if (cancelled) return
+        const found = productCall.ok ? productCall.result?.items?.[0] : undefined
+        if (!found || !bomCall.ok || !bomCall.result) {
+          setError(t('production_bom.products.detail.notFound', 'Product not found.'))
+          return
+        }
+        setProduct(found)
+        setBom(bomCall.result)
+        setMaterials(materialsCall.ok ? materialsCall.result?.items ?? [] : [])
+        if (found.source_product_id) {
+          const sourceCall = await apiCall<ListResponse<ProductRow>>(
+            `/api/production_bom/products?id=${encodeURIComponent(found.source_product_id)}`,
+          ).catch(() => null)
+          if (!cancelled) setSource(sourceCall?.ok ? sourceCall.result?.items?.[0] ?? null : null)
+        } else {
+          setSource(null)
+        }
+      } catch {
+        if (!cancelled) setError(t('production_bom.products.detail.notFound', 'Product not found.'))
+      } finally {
+        if (!cancelled) setIsLoading(false)
       }
-      setProduct(found)
-      setBom(bomCall.result)
-      setMaterials(materialsCall.ok ? materialsCall.result?.items ?? [] : [])
-      if (found.source_product_id) {
-        const sourceCall = await apiCall<ListResponse<ProductRow>>(
-          `/api/production_bom/products?id=${encodeURIComponent(found.source_product_id)}`,
-        )
-        if (!cancelled) setSource(sourceCall.ok ? sourceCall.result?.items?.[0] ?? null : null)
-      } else {
-        setSource(null)
-      }
-      setIsLoading(false)
     })()
     return () => {
       cancelled = true

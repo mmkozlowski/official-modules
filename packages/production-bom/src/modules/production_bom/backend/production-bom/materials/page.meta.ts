@@ -7,7 +7,7 @@ export const metadata = {
   pageTitleKey: 'production_bom.materials.list.title',
   pageGroup: 'Production',
   pageGroupKey: 'production_bom.nav.group',
-  pagePriority: 40,
+  pagePriority: 31,
   pageOrder: 20,
   icon: materialsIcon,
   breadcrumb: [{ label: 'Materials', labelKey: 'production_bom.materials.list.title' }],

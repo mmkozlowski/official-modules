@@ -25,8 +25,8 @@ export type ScopeResolution =
 /**
  * Tenant and organisation for a custom (non-CRUD-factory) route, resolved the
  * way `makeCrudRoute` resolves them: the organisation picked in the switcher
- * wins, the token's own organisation is the fallback, and a request with no
- * single organisation is refused rather than widened.
+ * wins, the token's own organisation is the fallback, and a request that
+ * resolves to no organisation at all is refused rather than widened.
  */
 export async function resolveRequestScope(request: Request): Promise<ScopeResolution> {
   const auth = await getAuthFromRequest(request)
@@ -41,8 +41,11 @@ export async function resolveRequestScope(request: Request): Promise<ScopeResolu
     // Degrade to the token's own scope rather than to no scope — never widen on error.
     scope = null
   }
+  // Same fallback as the CRUD factory (`selectedOrganizationId ?? auth.orgId`), so
+  // a custom route and a list route always agree on which organisation a record
+  // belongs to — including for a super-admin with no organisation picked.
   const tenantId = (scope ? scope.tenantId : auth.tenantId) ?? auth.tenantId ?? null
-  const organizationId = scope ? scope.selectedId : (auth.orgId ?? null)
+  const organizationId = scope?.selectedId ?? auth.orgId ?? null
   if (!tenantId || !organizationId) {
     return {
       ok: false,

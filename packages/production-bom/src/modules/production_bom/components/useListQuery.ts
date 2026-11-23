@@ -56,8 +56,14 @@ export function useListQuery<TRow>(options: {
     void (async () => {
       setIsLoading(true)
       setError(null)
-      const call = await apiCall<ListResponse<TRow>>(`/api/${options.apiPath}?${params.toString()}`)
+      const call = await apiCall<ListResponse<TRow>>(`/api/${options.apiPath}?${params.toString()}`).catch(() => null)
       if (cancelled) return
+      if (!call) {
+        setRows([])
+        setError(options.loadErrorMessage)
+        setIsLoading(false)
+        return
+      }
       if (!call.ok || !call.result) {
         setRows([])
         setError(options.loadErrorMessage)

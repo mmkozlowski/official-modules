@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Page, PageBody } from '@open-mercato/ui/backend/Page'
 import { CrudForm } from '@open-mercato/ui/backend/CrudForm'
 import { SectionHeader } from '@open-mercato/ui/backend/SectionHeader'
@@ -21,11 +21,10 @@ import {
 import type { ListResponse, MaterialRow, MaterialUsageResponse } from '../../../../components/types'
 import { formatDecimal, formatMoney } from '../../../../lib/format'
 
-export default function EditMaterialPage() {
+export default function EditMaterialPage({ params }: { params?: { id?: string } }) {
   const t = useT()
   const locale = useLocale()
   const router = useRouter()
-  const params = useParams<{ id: string }>()
   const materialId = String(params?.id ?? '')
 
   const [material, setMaterial] = React.useState<MaterialRow | null>(null)
@@ -35,23 +34,34 @@ export default function EditMaterialPage() {
   const [reloadToken, setReloadToken] = React.useState(0)
 
   React.useEffect(() => {
-    if (!materialId) return
+    if (!materialId) {
+      setIsLoading(false)
+      return
+    }
     let cancelled = false
     void (async () => {
       setIsLoading(true)
-      const [materialCall, usageCall] = await Promise.all([
-        apiCall<ListResponse<MaterialRow>>(`/api/production_bom/materials?id=${encodeURIComponent(materialId)}`),
-        apiCall<MaterialUsageResponse>(`/api/production_bom/materials/${encodeURIComponent(materialId)}/usage`),
-      ])
-      if (cancelled) return
-      const found = materialCall.ok ? materialCall.result?.items?.[0] : undefined
-      if (!found) {
-        setError(t('production_bom.materials.edit.notFound', 'Material not found.'))
-      } else {
-        setMaterial(found)
-        setUsage(usageCall.ok ? usageCall.result ?? null : null)
+      try {
+        const [materialCall, usageCall] = await Promise.all([
+          apiCall<ListResponse<MaterialRow>>(`/api/production_bom/materials?id=${encodeURIComponent(materialId)}`),
+          // "Where used" is secondary: if it fails, the form still opens with an empty section.
+          apiCall<MaterialUsageResponse>(`/api/production_bom/materials/${encodeURIComponent(materialId)}/usage`).catch(
+            () => null,
+          ),
+        ])
+        if (cancelled) return
+        const found = materialCall.ok ? materialCall.result?.items?.[0] : undefined
+        if (!found) {
+          setError(t('production_bom.materials.edit.notFound', 'Material not found.'))
+        } else {
+          setMaterial(found)
+          setUsage(usageCall?.ok ? usageCall.result ?? null : null)
+        }
+      } catch {
+        if (!cancelled) setError(t('production_bom.materials.edit.notFound', 'Material not found.'))
+      } finally {
+        if (!cancelled) setIsLoading(false)
       }
-      setIsLoading(false)
     })()
     return () => {
       cancelled = true
