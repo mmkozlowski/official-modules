@@ -3,9 +3,7 @@
 Demo: `http://localhost:3017`, login `superadmin@acme.com` / `secret`, menu boczne → grupa **Produkcja**.
 Rozdzielczość nagrania 1440×900. Zrzuty referencyjne leżą obok tego pliku (numery w nawiasach).
 
-Przed nagraniem: dane demo są w stanie po przebiegu testowym (w poduszce 45×45 jest dodany „Rzep 20 mm”,
-istnieje kopia „Poduszka na krzesło ogrodowe 50×50”). Żeby nagrać „na czysto”, usuń kopię z listy wyrobów
-i w BOM poduszki 45×45 usuń pozycję „Rzep 20 mm” → **Zapisz BOM**.
+Przed nagraniem: `node docs/recording/reset-demo.cjs` przywraca dane „na czysto” (usuwa „Rzep 20 mm” dodany w scenie 5 i kopie z duplikowania). Uruchom go po każdej próbie. Stan na 24.11 rano: dane czyste.
 
 | # | Scena | Co kliknąć | Co widać | Jedna myśl do powiedzenia |
 |---|---|---|---|---|
