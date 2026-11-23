@@ -1,12 +1,13 @@
 {
   "name": "@open-mercato/production-bom",
   "version": "0.1.0",
-  "description": "Bill of materials for furniture and upholstery production — materials, products with a BOM and labour time, material cost and requirements for N units, product duplication.",
+  "description": "Bill of materials for furniture and upholstery production \u2014 materials, products with a BOM and labour time, material cost and requirements for N units, product duplication.",
   "type": "module",
   "main": "./dist/index.js",
   "files": [
     "dist",
     "src",
+    "generated",
     "README.md"
   ],
   "scripts": {

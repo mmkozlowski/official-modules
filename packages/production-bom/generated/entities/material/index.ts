@@ -1,0 +1,15 @@
+export const id = "id";
+export const organization_id = "organization_id";
+export const tenant_id = "tenant_id";
+export const name = "name";
+export const code = "code";
+export const material_type = "material_type";
+export const unit = "unit";
+export const unit_price = "unit_price";
+export const waste_percent = "waste_percent";
+export const currency_code = "currency_code";
+export const notes = "notes";
+export const is_active = "is_active";
+export const created_at = "created_at";
+export const updated_at = "updated_at";
+export const deleted_at = "deleted_at";

@@ -1,0 +1,15 @@
+export const id = "id";
+export const organization_id = "organization_id";
+export const tenant_id = "tenant_id";
+export const name = "name";
+export const code = "code";
+export const product_type = "product_type";
+export const fabric_consumption = "fabric_consumption";
+export const labor_minutes = "labor_minutes";
+export const description = "description";
+export const source_product_id = "source_product_id";
+export const catalog_product_id = "catalog_product_id";
+export const is_active = "is_active";
+export const created_at = "created_at";
+export const updated_at = "updated_at";
+export const deleted_at = "deleted_at";

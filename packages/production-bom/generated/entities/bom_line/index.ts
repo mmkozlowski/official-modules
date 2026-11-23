@@ -1,0 +1,12 @@
+export const id = "id";
+export const organization_id = "organization_id";
+export const tenant_id = "tenant_id";
+export const product_id = "product_id";
+export const material_id = "material_id";
+export const quantity = "quantity";
+export const segment_count = "segment_count";
+export const segment_length = "segment_length";
+export const position = "position";
+export const notes = "notes";
+export const created_at = "created_at";
+export const updated_at = "updated_at";
