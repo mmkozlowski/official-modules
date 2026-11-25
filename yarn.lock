@@ -6402,7 +6402,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@open-mercato/production-bom@workspace:packages/production-bom":
+"@open-mercato/production-bom@workspace:*, @open-mercato/production-bom@workspace:packages/production-bom":
   version: 0.0.0-use.local
   resolution: "@open-mercato/production-bom@workspace:packages/production-bom"
   dependencies:
@@ -6422,6 +6422,36 @@ __metadata:
     "@mikro-orm/decorators": ^7.0.0
     "@mikro-orm/postgresql": ^7.0.0
     "@open-mercato/core": 0.6.3-develop.3778.1.25fdb35f2e
+    "@open-mercato/shared": 0.6.3-develop.3778.1.25fdb35f2e
+    "@open-mercato/ui": 0.6.3-develop.3778.1.25fdb35f2e
+    react: ^19.0.0
+    react-dom: ^19.0.0
+    zod: ^4.3.6
+  languageName: unknown
+  linkType: soft
+
+"@open-mercato/production-planning@workspace:packages/production-planning":
+  version: 0.0.0-use.local
+  resolution: "@open-mercato/production-planning@workspace:packages/production-planning"
+  dependencies:
+    "@open-mercato/core": "npm:0.6.3-develop.3778.1.25fdb35f2e"
+    "@open-mercato/production-bom": "workspace:*"
+    "@open-mercato/shared": "npm:0.6.3-develop.3778.1.25fdb35f2e"
+    "@open-mercato/ui": "npm:0.6.3-develop.3778.1.25fdb35f2e"
+    "@types/jest": "npm:^30.0.0"
+    esbuild: "npm:^0.25.0"
+    glob: "npm:^13.0.6"
+    jest: "npm:^30.2.0"
+    react: "npm:19.2.5"
+    react-dom: "npm:19.2.5"
+    ts-jest: "npm:^29.4.6"
+    typescript: "npm:^5.9.3"
+  peerDependencies:
+    "@mikro-orm/core": ^7.0.0
+    "@mikro-orm/decorators": ^7.0.0
+    "@mikro-orm/postgresql": ^7.0.0
+    "@open-mercato/core": 0.6.3-develop.3778.1.25fdb35f2e
+    "@open-mercato/production-bom": 0.1.0
     "@open-mercato/shared": 0.6.3-develop.3778.1.25fdb35f2e
     "@open-mercato/ui": 0.6.3-develop.3778.1.25fdb35f2e
     react: ^19.0.0

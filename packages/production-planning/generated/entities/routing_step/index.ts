@@ -1,0 +1,11 @@
+export const id = "id";
+export const organization_id = "organization_id";
+export const tenant_id = "tenant_id";
+export const product_id = "product_id";
+export const work_center_id = "work_center_id";
+export const sequence = "sequence";
+export const minutes_per_unit = "minutes_per_unit";
+export const setup_minutes = "setup_minutes";
+export const notes = "notes";
+export const created_at = "created_at";
+export const updated_at = "updated_at";
