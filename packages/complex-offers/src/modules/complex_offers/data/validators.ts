@@ -24,20 +24,35 @@ export const quantityDiscountSchema = z.object({
   percent: z.coerce.number().min(0).max(90),
 })
 
-export const createModelSchema = z.object({
+/**
+ * Model fields WITHOUT defaults. Defaults belong to create only: zod applies
+ * `.default()` even inside `.partial()`, so an update schema derived from a
+ * schema with defaults silently resets every omitted field — a PUT of just
+ * `{ id, isActive }` would zero the margin. Keep the two schemas apart.
+ */
+const modelFields = {
   name: trimmedString(255),
   code: optionalTrimmed(64),
   description: optionalTrimmed(4000),
   basePrice: z.coerce.number().min(0).max(MAX_MONEY),
-  marginPercent: z.coerce.number().min(0).max(500).default(0),
+  marginPercent: z.coerce.number().min(0).max(500),
   bomProductCode: optionalTrimmed(64),
-  bomMaterialCost: z.coerce.number().min(0).max(MAX_MONEY).default(0),
-  fabricConsumption: z.coerce.number().min(0).max(10_000).default(0),
-  currencyCode: z.string().trim().length(3).toUpperCase().default('PLN'),
-  isActive: z.boolean().optional(),
+  bomMaterialCost: z.coerce.number().min(0).max(MAX_MONEY),
+  fabricConsumption: z.coerce.number().min(0).max(10_000),
+  currencyCode: z.string().trim().length(3).toUpperCase(),
+  isActive: z.boolean(),
+}
+
+export const createModelSchema = z.object({
+  ...modelFields,
+  marginPercent: modelFields.marginPercent.default(0),
+  bomMaterialCost: modelFields.bomMaterialCost.default(0),
+  fabricConsumption: modelFields.fabricConsumption.default(0),
+  currencyCode: modelFields.currencyCode.default('PLN'),
+  isActive: modelFields.isActive.optional(),
 })
 
-export const updateModelSchema = createModelSchema.partial().extend({
+export const updateModelSchema = z.object(modelFields).partial().extend({
   id: z.string().uuid(),
   /** Set when the material cost was just copied from the BOM. */
   bomCostRefreshed: z.boolean().optional(),

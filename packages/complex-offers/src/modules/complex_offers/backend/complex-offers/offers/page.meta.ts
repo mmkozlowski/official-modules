@@ -5,7 +5,7 @@ export const metadata = {
   requireFeatures: ['complex_offers.view'],
   pageTitle: 'Offers',
   pageTitleKey: 'complex_offers.offers.list.title',
-  pageGroup: 'Offers',
+  pageGroup: 'Complex offers',
   pageGroupKey: 'complex_offers.nav.group',
   pagePriority: 32,
   pageOrder: 10,

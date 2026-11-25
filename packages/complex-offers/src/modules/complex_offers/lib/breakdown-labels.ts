@@ -29,7 +29,7 @@ export function describeStep(step: BreakdownStep, t: Translate, currencyCode: st
           })
         : t('complex_offers.breakdown.materials', 'Materials from the BOM')
     case 'fabric':
-      return t('complex_offers.breakdown.fabric', 'Fabric {label}: {meters} m × {price}/m', {
+      return t('complex_offers.breakdown.fabric', '{label}: {meters} m × {price}/m', {
         label: step.label ?? '',
         meters: formatDecimal(p.meters, locale, 3),
         price: money(p.pricePerMeter),

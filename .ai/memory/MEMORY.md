@@ -1,0 +1,2 @@
+- [zod partial zachowuje defaulty](zod-partial-zachowuje-defaulty.md) — schemat update z `.partial()` na create z defaultami zeruje pominięte pola (BOM też ma ten błąd)
+- [db generate dla pakietu w standalone](db-generate-pakiet-standalone.md) — CLI nie widzi encji pakietu przy istniejącym dist; obejście krok po kroku
