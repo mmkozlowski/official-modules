@@ -69,7 +69,7 @@ export function PlanBoard({ input, view, changedCells, changedOrders, busyOrderI
   )
   const hiddenCount = input.orders.length - visibleOrders.length
 
-  const gridTemplate = `minmax(230px, 280px) repeat(${view.days.length}, ${DAY_COLUMN})`
+  const gridTemplate = `minmax(320px, 360px) repeat(${view.days.length}, ${DAY_COLUMN})`
 
   const dayHeader = (
     <>
@@ -97,7 +97,7 @@ export function PlanBoard({ input, view, changedCells, changedOrders, busyOrderI
           <Legend />
         </div>
         <div className="overflow-x-auto rounded-lg border bg-card p-3">
-          <div className="grid min-w-[880px] gap-1" style={{ gridTemplateColumns: gridTemplate }}>
+          <div className="grid min-w-[1000px] gap-1" style={{ gridTemplateColumns: gridTemplate }}>
             {dayHeader}
             {centres.map((centre) => {
               const row = loadByCentre.get(centre.id)
@@ -166,7 +166,7 @@ export function PlanBoard({ input, view, changedCells, changedOrders, busyOrderI
           ) : null}
         </div>
         <div className="overflow-x-auto rounded-lg border bg-card p-3">
-          <div className="grid min-w-[880px] gap-x-1 gap-y-1.5" style={{ gridTemplateColumns: gridTemplate }}>
+          <div className="grid min-w-[1000px] gap-x-1 gap-y-1.5" style={{ gridTemplateColumns: gridTemplate }}>
             {dayHeader}
             {visibleOrders.length === 0 ? (
               <div className="col-span-full py-8 text-center text-sm text-muted-foreground">
@@ -195,7 +195,7 @@ export function PlanBoard({ input, view, changedCells, changedOrders, busyOrderI
                     onMouseLeave={() => setHoverOrders(new Set())}
                   >
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex flex-wrap items-center gap-1.5">
                         <Link
                           href={`/backend/production-planning/orders/${order.id}`}
                           className="text-sm font-semibold tabular-nums hover:underline"
@@ -242,7 +242,7 @@ export function PlanBoard({ input, view, changedCells, changedOrders, busyOrderI
                       </button>
                       <input
                         type="date"
-                        className="w-[7.5rem] rounded border bg-background px-1 py-0.5 text-xs tabular-nums"
+                        className="w-[8.5rem] rounded border bg-background px-1 py-0.5 text-xs tabular-nums"
                         value={order.dueDate}
                         aria-label={t('production_planning.orders.fields.dueDate', 'Due date')}
                         onChange={(event) => {
