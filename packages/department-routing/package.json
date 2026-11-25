@@ -1,0 +1,106 @@
+{
+  "name": "@open-mercato/department-routing",
+  "version": "0.1.0",
+  "description": "Make-to-order orders split into department tasks by product routing — departments report done quantities (also partial) and the order status recomputes itself.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "files": [
+    "dist",
+    "src",
+    "generated",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "prepack": "node build.mjs",
+    "watch": "node watch.mjs",
+    "test": "jest --config jest.config.cjs",
+    "typecheck": "NODE_OPTIONS=--max-old-space-size=8192 tsc --noEmit"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./*.ts": {
+      "types": "./src/*.ts",
+      "default": "./dist/*.js"
+    },
+    "./*.tsx": {
+      "types": "./src/*.tsx",
+      "default": "./dist/*.js"
+    },
+    "./*.json": "./src/*.json",
+    "./*": {
+      "types": [
+        "./src/*.ts",
+        "./src/*.tsx"
+      ],
+      "default": "./dist/*.js"
+    },
+    "./*/*.json": "./src/*/*.json",
+    "./*/*": {
+      "types": [
+        "./src/*/*.ts",
+        "./src/*/*.tsx"
+      ],
+      "default": "./dist/*/*.js"
+    },
+    "./*/*/*.json": "./src/*/*/*.json",
+    "./*/*/*": {
+      "types": [
+        "./src/*/*/*.ts",
+        "./src/*/*/*.tsx"
+      ],
+      "default": "./dist/*/*/*.js"
+    },
+    "./*/*/*/*.json": "./src/*/*/*/*.json",
+    "./*/*/*/*": {
+      "types": [
+        "./src/*/*/*/*.ts",
+        "./src/*/*/*/*.tsx"
+      ],
+      "default": "./dist/*/*/*/*.js"
+    },
+    "./*/*/*/*/*.json": "./src/*/*/*/*/*.json",
+    "./*/*/*/*/*": {
+      "types": [
+        "./src/*/*/*/*/*.ts",
+        "./src/*/*/*/*/*.tsx"
+      ],
+      "default": "./dist/*/*/*/*/*.js"
+    },
+    "./*/*/*/*/*/*.json": "./src/*/*/*/*/*/*.json",
+    "./*/*/*/*/*/*": {
+      "types": [
+        "./src/*/*/*/*/*/*.ts",
+        "./src/*/*/*/*/*/*.tsx"
+      ],
+      "default": "./dist/*/*/*/*/*/*.js"
+    }
+  },
+  "peerDependencies": {
+    "@mikro-orm/core": "^7.0.0",
+    "@mikro-orm/decorators": "^7.0.0",
+    "@mikro-orm/postgresql": "^7.0.0",
+    "@open-mercato/core": "0.6.3-develop.3778.1.25fdb35f2e",
+    "@open-mercato/shared": "0.6.3-develop.3778.1.25fdb35f2e",
+    "@open-mercato/ui": "0.6.3-develop.3778.1.25fdb35f2e",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@open-mercato/core": "0.6.3-develop.3778.1.25fdb35f2e",
+    "@open-mercato/shared": "0.6.3-develop.3778.1.25fdb35f2e",
+    "@open-mercato/ui": "0.6.3-develop.3778.1.25fdb35f2e",
+    "@types/jest": "^30.0.0",
+    "esbuild": "^0.25.0",
+    "glob": "^13.0.6",
+    "jest": "^30.2.0",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
