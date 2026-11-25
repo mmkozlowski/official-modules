@@ -8,7 +8,7 @@ import { Label } from '@open-mercato/ui/primitives/label'
 import { apiCall } from '@open-mercato/ui/backend/utils/apiCall'
 import { flash } from '@open-mercato/ui/backend/FlashMessages'
 import { useT } from '@open-mercato/shared/lib/i18n/context'
-import type { PlanInput, PlanOrder } from '../lib/plan-model'
+import { URGENT_DEFAULT_LEAD_DAYS, type PlanInput, type PlanOrder } from '../lib/plan-model'
 import { shiftWorkingDays, workingDayOnOrAfter } from '../lib/schedule'
 
 const SELECT_CLASS =
@@ -44,7 +44,7 @@ export function UrgentOrderDialog({
     if (!open) return
     setProductId(products[0]?.id ?? '')
     setQuantity('')
-    setDueDate(shiftWorkingDays(workingDayOnOrAfter(input.today), 4))
+    setDueDate(shiftWorkingDays(workingDayOnOrAfter(input.today), URGENT_DEFAULT_LEAD_DAYS))
     setFabricId('')
     setReference('')
   }, [input.today, open, products])

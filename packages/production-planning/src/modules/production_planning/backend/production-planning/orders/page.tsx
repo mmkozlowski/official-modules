@@ -176,7 +176,7 @@ export default function OrdersListPage() {
       {
         accessorKey: 'status',
         header: t('production_planning.orders.fields.status', 'Status'),
-        meta: { maxWidth: '130px' },
+        meta: { maxWidth: '150px' },
         cell: ({ row }) => (
           <StatusBadge variant={STATUS_VARIANT[row.original.status] ?? 'neutral'}>
             {t(`production_planning.status.${row.original.status}`, row.original.status)}
@@ -198,7 +198,7 @@ export default function OrdersListPage() {
         accessorKey: 'labor_minutes_total',
         header: t('production_planning.orders.columns.labour', 'Labour'),
         enableSorting: false,
-        meta: { maxWidth: '120px' },
+        meta: { maxWidth: '120px', hidden: true },
         cell: ({ row }) =>
           row.original.labor_minutes_total != null ? (
             <span className="tabular-nums">{formatHours(row.original.labor_minutes_total)}</span>
@@ -209,7 +209,7 @@ export default function OrdersListPage() {
       {
         accessorKey: 'reference',
         header: t('production_planning.orders.fields.reference', 'Reference'),
-        meta: { maxWidth: '280px' },
+        meta: { maxWidth: '280px', hidden: true },
         cell: ({ row }) => <span className="text-muted-foreground">{row.original.reference ?? '—'}</span>,
       },
     ],

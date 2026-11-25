@@ -32,6 +32,13 @@ function localIsoDate(now = new Date()) {
   }
   const json = (method, data) => ({ method, headers: { 'content-type': 'application/json' }, data })
 
+  // Superadmin nie ma własnej organizacji: zapisy wymagają wybranej w przełączniku.
+  const anyCentre = (await api('/api/production_planning/work-centers?pageSize=1')).items[0]
+  const anyProduct = (await api('/api/production_bom/products?pageSize=1')).items[0]
+  const orgId = (anyCentre || anyProduct || {}).organization_id
+  if (!orgId) throw new Error('Nie znaleziono organizacji z danymi demo')
+  await page.context().addCookies([{ name: 'om_selected_org', value: orgId, url: BASE }])
+
   // 1. Zlecenia: wszystkie usuwamy (także pilne z próby).
   let removed = 0
   for (;;) {

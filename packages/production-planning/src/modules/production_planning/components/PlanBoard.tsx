@@ -18,7 +18,6 @@ type Props = {
   changedOrders: ReadonlySet<string>
   busyOrderId: string | null
   onMove: (orderId: string, workingDays: number) => void
-  onSetDueDate: (orderId: string, dueDate: IsoDate) => void
 }
 
 const DAY_COLUMN = 'minmax(64px, 1fr)'
@@ -35,7 +34,7 @@ const DAY_COLUMN = 'minmax(64px, 1fr)'
  * cell lights up the orders behind it. That is the question asked of a red cell:
  * "who is in there?".
  */
-export function PlanBoard({ input, view, changedCells, changedOrders, busyOrderId, onMove, onSetDueDate }: Props) {
+export function PlanBoard({ input, view, changedCells, changedOrders, busyOrderId, onMove }: Props) {
   const t = useT()
   const locale = useLocale()
   const [hoverOrders, setHoverOrders] = React.useState<ReadonlySet<string>>(new Set())
@@ -240,16 +239,13 @@ export function PlanBoard({ input, view, changedCells, changedOrders, busyOrderI
                       >
                         <ChevronLeft className="size-4" />
                       </button>
-                      <input
-                        type="date"
-                        className="w-[8.5rem] rounded border bg-background px-1 py-0.5 text-xs tabular-nums"
-                        value={order.dueDate}
-                        aria-label={t('production_planning.orders.fields.dueDate', 'Due date')}
-                        onChange={(event) => {
-                          if (event.target.value) onSetDueDate(order.id, event.target.value)
-                        }}
+                      <span
+                        className="min-w-[4.5rem] rounded border bg-background px-1.5 py-0.5 text-center text-xs font-medium tabular-nums"
+                        title={t('production_planning.orders.fields.dueDate', 'Due date')}
                         data-testid={`due-${order.number}`}
-                      />
+                      >
+                        {formatDayHeader(order.dueDate, locale).weekday} {formatShortDate(order.dueDate, locale)}
+                      </span>
                       <button
                         type="button"
                         className="rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-40"

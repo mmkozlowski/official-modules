@@ -1,4 +1,5 @@
 import { demoData } from '../lib/demo-data'
+import { URGENT_DEFAULT_LEAD_DAYS } from '../lib/plan-model'
 import { computePlan, shiftWorkingDays, type ScheduleOrder, type ScheduleRoutingStep } from '../lib/schedule'
 
 /**
@@ -74,6 +75,10 @@ describe('recording scenario', () => {
     expect(redCentres(moved(baseOrders, demoData.rehearsal.move))).toEqual(['KRO', 'SZW'])
     const sewing = after.load.find((centre) => centre.workCenterId === 'SZW')!
     expect(sewing.peakPercent).toBeGreaterThanOrEqual(115)
+  })
+
+  it('the urgent-order dialog proposes the due date the scenario uses, so nobody types a date on camera', () => {
+    expect(URGENT_DEFAULT_LEAD_DAYS).toBe(demoData.rehearsal.urgent.dueInWorkingDays)
   })
 
   it('the urgent order overloads upholstery, and moving the stock inlets later clears it', () => {

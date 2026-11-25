@@ -27,6 +27,9 @@ import {
   type ScheduledOrder,
 } from './schedule'
 
+/** Default due date offered for an urgent order: one working week from the first working day. */
+export const URGENT_DEFAULT_LEAD_DAYS = 5
+
 export type PlanWorkCenter = {
   id: string
   name: string
@@ -163,9 +166,11 @@ export function aggregateRequirements(
           }
         : null,
     )
-    for (const row of result.rows) add(row.materialId, row.normQuantity, row.requiredQuantity, schedule.start, order.id)
+    // An order already under way needed its material yesterday — for the warehouse that means "now".
+    const neededBy = schedule.start < input.today ? input.today : schedule.start
+    for (const row of result.rows) add(row.materialId, row.normQuantity, row.requiredQuantity, neededBy, order.id)
     if (result.fabric) {
-      add(result.fabric.materialId, result.fabric.normQuantity, result.fabric.requiredQuantity, schedule.start, order.id)
+      add(result.fabric.materialId, result.fabric.normQuantity, result.fabric.requiredQuantity, neededBy, order.id)
     }
   }
 

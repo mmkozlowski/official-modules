@@ -1,0 +1,3 @@
+- [Demo planowania — scenariusz liczb](demo-planowania-scenariusz.md) — dane demo są strojone pod nagranie; nie ruszać bez testu recording-scenario
+- [Pamięć Maca przy demach](pamiec-maca-dema.md) — next dev z limitem 4 GB, gasić po testach, nic równolegle
+- [db generate w standalone pomija pakiety](db-generate-standalone.md) — obejście przez symlink jako @app

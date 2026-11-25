@@ -292,7 +292,6 @@ export default function ProductionPlanPage() {
             changedOrders={changedOrders}
             busyOrderId={busyOrderId}
             onMove={moveOrder}
-            onSetDueDate={(orderId, dueDate) => void setDueDate(orderId, dueDate)}
           />
 
           <RequirementsTable lines={view.requirements} input={input} changedMaterials={changedMaterials} />
