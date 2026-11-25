@@ -180,7 +180,7 @@ export default function OrdersListPage() {
         accessorKey: 'lines_summary',
         header: t('department_routing.orders.columns.lines', 'Products'),
         enableSorting: false,
-        meta: { maxWidth: '320px', truncate: true },
+        meta: { hidden: true, maxWidth: '320px', truncate: true },
         cell: ({ row }) => <span className="text-muted-foreground">{row.original.lines_summary || '—'}</span>,
       },
       {
