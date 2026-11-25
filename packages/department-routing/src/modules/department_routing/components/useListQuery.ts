@@ -12,7 +12,7 @@ export const PAGE_SIZE_OPTIONS = [10, 25, 50, 100]
 /**
  * State and loading for a server-paged list: page, page size, search, filters,
  * sorting and a reload token. Both lists of the module use it, so paging and
- * sorting behave identically on the two screens.
+ * sorting behave identically on every list of the module.
  *
  * Sorting is sent to the server as `sortField`/`sortDir` using the column's
  * accessor key — the route's `sortFieldMap` accepts those keys directly.
@@ -34,6 +34,9 @@ export function useListQuery<TRow>(options: {
   const [isLoading, setIsLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
   const [reloadToken, setReloadToken] = React.useState(0)
+  // A silent refresh re-reads the page without the loading state, so a list
+  // that follows live progress does not flicker every few seconds.
+  const silentRef = React.useRef(false)
 
   const params = React.useMemo(() => {
     const query = new URLSearchParams()
@@ -54,16 +57,20 @@ export function useListQuery<TRow>(options: {
   React.useEffect(() => {
     let cancelled = false
     void (async () => {
-      setIsLoading(true)
+      const silent = silentRef.current
+      silentRef.current = false
+      if (!silent) setIsLoading(true)
       setError(null)
       const call = await apiCall<ListResponse<TRow>>(`/api/${options.apiPath}?${params.toString()}`).catch(() => null)
       if (cancelled) return
+      if (!call && silent) return
       if (!call) {
         setRows([])
         setError(options.loadErrorMessage)
         setIsLoading(false)
         return
       }
+      if ((!call.ok || !call.result) && silent) return
       if (!call.ok || !call.result) {
         setRows([])
         setError(options.loadErrorMessage)
@@ -81,6 +88,10 @@ export function useListQuery<TRow>(options: {
   }, [options.apiPath, options.loadErrorMessage, params, reloadToken, scopeVersion])
 
   const reload = React.useCallback(() => setReloadToken((token) => token + 1), [])
+  const refreshSilently = React.useCallback(() => {
+    silentRef.current = true
+    setReloadToken((token) => token + 1)
+  }, [])
 
   return {
     rows,
@@ -113,5 +124,6 @@ export function useListQuery<TRow>(options: {
     isLoading,
     error,
     reload,
+    refreshSilently,
   }
 }
