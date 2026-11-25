@@ -1,0 +1,9 @@
+export const id = "id";
+export const organization_id = "organization_id";
+export const tenant_id = "tenant_id";
+export const task_id = "task_id";
+export const order_id = "order_id";
+export const department_id = "department_id";
+export const quantity_delta = "quantity_delta";
+export const reported_by = "reported_by";
+export const created_at = "created_at";

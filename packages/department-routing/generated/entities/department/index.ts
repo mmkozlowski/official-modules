@@ -1,0 +1,11 @@
+export const id = "id";
+export const organization_id = "organization_id";
+export const tenant_id = "tenant_id";
+export const name = "name";
+export const code = "code";
+export const position = "position";
+export const description = "description";
+export const is_active = "is_active";
+export const created_at = "created_at";
+export const updated_at = "updated_at";
+export const deleted_at = "deleted_at";

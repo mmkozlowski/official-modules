@@ -1,0 +1,10 @@
+export const id = "id";
+export const organization_id = "organization_id";
+export const tenant_id = "tenant_id";
+export const order_id = "order_id";
+export const product_id = "product_id";
+export const product_name = "product_name";
+export const quantity = "quantity";
+export const position = "position";
+export const created_at = "created_at";
+export const updated_at = "updated_at";

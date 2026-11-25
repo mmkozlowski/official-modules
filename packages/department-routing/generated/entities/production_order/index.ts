@@ -1,0 +1,15 @@
+export const id = "id";
+export const organization_id = "organization_id";
+export const tenant_id = "tenant_id";
+export const number = "number";
+export const customer_name = "customer_name";
+export const due_date = "due_date";
+export const status = "status";
+export const departments_done = "departments_done";
+export const departments_total = "departments_total";
+export const accepted_at = "accepted_at";
+export const ready_at = "ready_at";
+export const notes = "notes";
+export const created_at = "created_at";
+export const updated_at = "updated_at";
+export const deleted_at = "deleted_at";
